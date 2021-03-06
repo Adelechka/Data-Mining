@@ -13,7 +13,7 @@ import java.util.*;
 import static org.json.JSONObject.wrap;
 
 public class Main {
-    final static String TOKEN = "cea04ba405e458b4207e1fa4b1938835204fb2f97002691c6a153912cb20f99a3d73c9b5782d5a884911a";
+    final static String TOKEN = "598e40ade0078e6a2712647fcf394df4b21f989aea295fa034c1ba8995ec0f69f0758dd91e19c530af129";
     final static Integer ID = 121089850;
     final static String DOMAIN = "itis_kfu";
     final static Integer POSTS_COUNT = 200;
@@ -25,7 +25,7 @@ public class Main {
         UserActor actor = new UserActor(ID, TOKEN);
 
         for (int i = 0; i < POSTS_COUNT / 100; i++) {
-            GetResponse post = vk
+            GetResponse response = vk
                     .wall()
                     .get(actor)
                     .domain(DOMAIN)
@@ -33,18 +33,29 @@ public class Main {
                     .offset(i)
                     .execute();
 
-            JSONObject postJSON = (JSONObject) wrap(post);
+            JSONObject post = (JSONObject) wrap(response);
             for (int j = 0; j < 100; j++) {
-                JSONObject postJSONItems = ((JSONArray) postJSON.get("items")).getJSONObject(j);
-                String[] words = stringProcessing((String) postJSONItems.get("text"));
+
+                JSONObject items = (JSONObject) post.getJSONArray("items").get(j);
+                String[] words = stringProcessing((String) items.get("text"));
+
                 countWords(counter, words);
+
+                if (items.has("copyHistory")) {
+                    JSONObject copyHistory = (JSONObject) items.getJSONArray("copyHistory").get(0);
+                    String text = copyHistory.getString("text");
+                    String[] innerPostWords = stringProcessing(text);
+                    countWords(counter, innerPostWords);
+
+                }
+
             }
         }
         printResult(counter);
     }
 
     private static String[] stringProcessing(String text) {
-        return text.replaceAll("[^a-zA-Zа-яА-ЯёЁ ]", "")
+        return text.replaceAll("[^a-zA-Zа-яА-ЯёЁ#_ ]", "")
                 .replaceAll("( ){2,}", " ")
                 .trim()
                 .toLowerCase(Locale.ROOT)
