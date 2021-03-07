@@ -13,7 +13,7 @@ import java.util.*;
 import static org.json.JSONObject.wrap;
 
 public class Main {
-    final static String TOKEN = "65fbf06bded387355e14fb685a488dac3570e0e28c374b6bcb2aafba297ac696a4901a590f758ebc7e4e3";
+    final static String TOKEN = "9699e9069699e9069699e9066b96eb12ee996999699e906c9916b638650d9757c059069";
     final static Integer ID = 121089850;
     final static String DOMAIN = "itis_kfu";
     final static Integer POSTS_COUNT = 200;
