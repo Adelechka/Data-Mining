@@ -6,7 +6,7 @@
 
     <groupId>ru.itis</groupId>
     <artifactId>homework2</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <version>0.1</version>
 
     <properties>
